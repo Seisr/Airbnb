@@ -19,6 +19,25 @@ export class CommentService {
     }
   }
 
+  async getCommentByRoomId(id: number): Promise<any> {
+    try {
+      let data = await this.prisma.binh_luan.findMany({
+        where: {
+          ma_phong: id,
+        },
+      });
+      return {
+        status: 200,
+        data: data,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `getCommentById error ${e}`,
+      };
+    }
+  }
+
   async postComment(body: commentDTO): Promise<any> {
     try {
       let {

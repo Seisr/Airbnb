@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { commentDTO } from './dto/comment.dto';
 
 @ApiTags('Comment')
@@ -11,6 +11,13 @@ export class CommentController {
   @Get('/getAllComment')
   async getAllComment(@Res() res): Promise<any> {
     let data = await this.commentService.getAllComment();
+    res.status(data.status).json(data);
+  }
+
+  @ApiParam({ name: 'id', required: true })
+  @Get('/getCommentByRoomId/:id')
+  async getCommentByRoomId(@Param('id') id, @Res() res): Promise<any> {
+    let data = await this.commentService.getCommentByRoomId(+id);
     res.status(data.status).json(data);
   }
 
