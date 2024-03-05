@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { editDTO } from './dto/edit.dto';
@@ -41,6 +41,13 @@ export class UserController {
   @Put('/editUserById/:id')
   async editUserById(@Param('id') id, @Body() body, @Res() res): Promise<any> {
     let data = await this.userService.editUserById(id, body);
+    res.status(data.status).json(data);
+  }
+
+  @ApiParam({ name: 'id', required: true })
+  @Delete('/deleteUserById/:id')
+  async deleteUserById(@Param('id') id, @Res() res): Promise<any> {
+    let data = await this.userService.deleteUserById(id);
     res.status(data.status).json(data);
   }
 }

@@ -116,4 +116,23 @@ export class UserService {
       };
     }
   }
+  async deleteUserById(id: string): Promise<any> {
+    try {
+      let id2 = Number(id);
+      await this.prisma.nguoi_dung.delete({
+        where: {
+          id: id2,
+        },
+      });
+      return {
+        status: 200,
+        message: 'Xóa người dùng thành công',
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `deleteUserById error ${e}`,
+      };
+    }
+  }
 }
