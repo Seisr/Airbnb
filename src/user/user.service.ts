@@ -26,4 +26,23 @@ export class UserService {
       };
     }
   }
+  async getUserById(id: string): Promise<any> {
+    try {
+      let id2 = Number(id);
+      let data = await this.prisma.nguoi_dung.findFirst({
+        where: {
+          id: id2,
+        },
+      });
+      return {
+        status: 200,
+        data: data,
+      };
+    } catch (error) {
+      return {
+        status: 500,
+        message: error,
+      };
+    }
+  }
 }

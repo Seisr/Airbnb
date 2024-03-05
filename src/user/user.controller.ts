@@ -16,4 +16,10 @@ export class UserController {
     let data = await this.userService.getListUser(page, size);
     response.status(data.status).json(data);
   }
+  @ApiParam({ name: 'id', required: false })
+  @Get('/getUserById/:id')
+  async getUserById(@Param('id') id, @Res() res): Promise<any> {
+    let data = await this.userService.getUserById(id);
+    res.status(data.status).json(data);
+  }
 }
