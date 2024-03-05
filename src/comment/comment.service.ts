@@ -69,4 +69,38 @@ export class CommentService {
       };
     }
   }
+  async editComment(id: number, body: commentDTO): Promise<any> {
+    try {
+      let {
+        ma_phong,
+        ma_nguoi_binh_luan,
+        ngay_binh_luan,
+        noi_dung,
+        sao_binh_luan,
+      } = body;
+      let ngay_binh_luan2 = new Date(ngay_binh_luan).toISOString();
+      let newComment = {
+        ma_phong: ma_phong,
+        ma_nguoi_binh_luan: ma_nguoi_binh_luan,
+        ngay_binh_luan: ngay_binh_luan2,
+        noi_dung: noi_dung,
+        sao_binh_luan: sao_binh_luan,
+      };
+      await this.prisma.binh_luan.update({
+        where: {
+          id: id,
+        },
+        data: newComment,
+      });
+      return {
+        status: 200,
+        message: 'edit bình luận thành công',
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `editComment error ${e}`,
+      };
+    }
+  }
 }
