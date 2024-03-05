@@ -5,9 +5,16 @@ import { ApiParam, ApiTags } from '@nestjs/swagger';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get('/getAllUser')
+  async getAllUser(@Res() res): Promise<any> {
+    let data = await this.userService.getAllUser();
+    res.status(data.status).json(data);
+  }
+
   @ApiParam({ name: 'page', required: false })
   @ApiParam({ name: 'size', required: false })
-  @Get('/get-list-user/:page/:size')
+  @Get('/getListUser/:page/:size')
   async getListUser(
     @Param('page') page,
     @Param('size') size,

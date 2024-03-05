@@ -4,6 +4,20 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class UserService {
   prisma = new PrismaClient();
+  async getAllUser(): Promise<any> {
+    try {
+      let data = await this.prisma.nguoi_dung.findMany();
+      return {
+        status: 200,
+        data: data,
+      };
+    } catch (error) {
+      return {
+        status: 500,
+        message: error,
+      };
+    }
+  }
   async getListUser(page: string, size: string): Promise<any> {
     try {
       let numPage = Number(page);
