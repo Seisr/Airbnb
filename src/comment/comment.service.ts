@@ -103,4 +103,22 @@ export class CommentService {
       };
     }
   }
+  async deleteComment(id: number): Promise<any> {
+    try {
+      await this.prisma.binh_luan.delete({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        status: 200,
+        message: 'Xóa bình luận thành công',
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `deleteComment error  ${e}`,
+      };
+    }
+  }
 }

@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { commentDTO } from './dto/comment.dto';
@@ -33,6 +42,13 @@ export class CommentController {
   @Put('/editCommentByCommentId/:id')
   async editComment(@Param('id') id, @Body() body, @Res() res): Promise<any> {
     let data = await this.commentService.editComment(+id, body);
+    res.status(data.status).json(data);
+  }
+
+  @ApiParam({ name: 'id', required: true })
+  @Delete('/deleteCommentByCommentId/:id')
+  async deleteComment(@Param('id') id, @Body() body, @Res() res): Promise<any> {
+    let data = await this.commentService.deleteComment(+id);
     res.status(data.status).json(data);
   }
 }
