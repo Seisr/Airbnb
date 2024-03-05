@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-
+import { editDTO } from './dto/edit.dto';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   prisma = new PrismaClient();
@@ -81,6 +82,37 @@ export class UserService {
       return {
         status: 500,
         message: error,
+      };
+    }
+  }
+  async editUserById(id: number, body: editDTO): Promise<any> {
+    try {
+      let { name, email, pass_word, phone, birth_day, gender, role } = body;
+      let encodedPass = bcrypt.hashSync(pass_word, 10);
+      let id2 = Number(id);
+      let updateData = {
+        name: name,
+        email: email,
+        pass_word: encodedPass,
+        phone: phone,
+        birth_day: birth_day,
+        gender: gender,
+        role: role,
+      };
+      await this.prisma.nguoi_dung.update({
+        where: {
+          id: id2,
+        },
+        data: updateData,
+      });
+      return {
+        status: 200,
+        message: 'edit thông tin thành công',
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `editUserById error ${e}`,
       };
     }
   }

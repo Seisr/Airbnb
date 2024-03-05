@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Res } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { editDTO } from './dto/edit.dto';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
@@ -33,6 +34,13 @@ export class UserController {
   @Get('/searchUserByName/:name')
   async searchUserByName(@Param('name') name, @Res() res): Promise<any> {
     let data = await this.userService.searchUserByName(name);
+    res.status(data.status).json(data);
+  }
+  @ApiParam({ name: 'id', required: true })
+  @ApiBody({ type: editDTO })
+  @Put('/editUserById/:id')
+  async editUserById(@Param('id') id, @Body() body, @Res() res): Promise<any> {
+    let data = await this.userService.editUserById(id, body);
     res.status(data.status).json(data);
   }
 }
