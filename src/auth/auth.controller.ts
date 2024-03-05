@@ -14,7 +14,7 @@ export class AuthController {
     res.status(data.status).json(data);
   }
   @ApiBody({ type: signUpDTO })
-  @Post('signUp')
+  @Post('/signUp')
   async signUp(@Body() body, @Res() res): Promise<any> {
     let data = await this.authService.signUp(body);
     res.status(data.status).json(data);
