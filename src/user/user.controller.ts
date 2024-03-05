@@ -22,4 +22,10 @@ export class UserController {
     let data = await this.userService.getUserById(id);
     res.status(data.status).json(data);
   }
+  @ApiParam({ name: 'name', required: false })
+  @Get('/searchUserByName/:name')
+  async searchUserByName(@Param('name') name, @Res() res): Promise<any> {
+    let data = await this.userService.searchUserByName(name);
+    res.status(data.status).json(data);
+  }
 }

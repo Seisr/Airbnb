@@ -45,4 +45,29 @@ export class UserService {
       };
     }
   }
+  async searchUserByName(name: string): Promise<any> {
+    try {
+      let data = await this.prisma.nguoi_dung.findMany({
+        where: {
+          name: name,
+        },
+      });
+      if (data.length != 0) {
+        return {
+          status: 200,
+          message: data,
+        };
+      } else {
+        return {
+          status: 404,
+          message: 'User name not found',
+        };
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        message: error,
+      };
+    }
+  }
 }
