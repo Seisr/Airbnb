@@ -5,9 +5,10 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CommentService } from './comment/comment.service';
 import { CommentModule } from './comment/comment.module';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
-  imports: [UserModule, AuthModule, CommentModule],
+  imports: [UserModule, AuthModule, CommentModule, BookingModule],
   controllers: [AppController],
   providers: [AppService, CommentService],
 })
