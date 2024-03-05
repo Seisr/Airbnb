@@ -135,4 +135,7 @@ export class UserService {
       };
     }
   }
+  async uploadAvatar(): Promise<any> {
+    let avatar = {};
+  }
 }

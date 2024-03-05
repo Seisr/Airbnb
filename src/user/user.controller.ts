@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+  UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { editDTO } from './dto/edit.dto';
@@ -50,4 +60,18 @@ export class UserController {
     let data = await this.userService.deleteUserById(id);
     res.status(data.status).json(data);
   }
+  // @Post('/uploadAvatar')
+  // @UseInterceptors(
+  //   FileInterceptor('file', {
+  //     storage: diskStorage({
+  //       destination: process.cwd() + '/public/img',
+  //       filename: (req, file, callback) => {
+  //         callback(null, new Date().getTime() + `${file.originalname}`);
+  //       },
+  //     }),
+  //   }),
+  // )
+  // uploadAvatar(@UploadedFile('file') file) {
+  //   return file;
+  // }
 }
