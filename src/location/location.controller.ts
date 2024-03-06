@@ -16,11 +16,13 @@ import { locationDTO } from './dto/location.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { FilesUploadDto } from './dto/file.dto';
+import { PrismaClient } from '@prisma/client';
 
 @ApiTags('Location')
 @Controller('location')
 export class LocationController {
   constructor(private readonly locationService: LocationService) {}
+  prisma = new PrismaClient();
 
   @Get('/getAllLocation')
   async getAllLocation(@Res() res): Promise<any> {
@@ -71,7 +73,8 @@ export class LocationController {
     res.status(data.status).json(data);
   }
 
-  @Post('/uploadImg')
+  @Post('/uploadImg/:id')
+  @ApiParam({ name: 'id', required: true })
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: FilesUploadDto })
   @UseInterceptors(
@@ -84,15 +87,28 @@ export class LocationController {
       }),
     }),
   )
-  async uploadImg(@UploadedFile('file') file): Promise<any> {
-    return file;
+  async uploadImg(
+    @Param('id') id,
+    @UploadedFile('file') file,
+    @Res() res,
+  ): Promise<any> {
+    let data = await this.locationService.uploadImg(+id, file);
+    res.status(data.status).json(data);
   }
 
-  @Post('/upload-cloud')
+  @Post('/uploadImgCloud/:id')
+  @ApiParam({ name: 'id', required: true })
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: FilesUploadDto })
   @UseInterceptors(FileInterceptor('file'))
-  uploadCloud(@UploadedFile('file') file: Express.Multer.File) {
-    return this.locationService.uploadImage(file);
+  async uploadImgCloud(
+    @Param('id') id,
+    @UploadedFile('file') file: Express.Multer.File,
+    @Res() res,
+  ): Promise<any> {
+    let data = await this.locationService.uploadImgCloud(file);
+    let data2 = await this.locationService.saveToDB(+id, data.url);
+    res.status(data2.status).json(data2);
+    // return file
   }
 }

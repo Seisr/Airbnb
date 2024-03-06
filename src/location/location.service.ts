@@ -126,7 +126,32 @@ export class LocationService {
       };
     }
   }
-  async uploadImage(
+  async uploadImg(id, file): Promise<any> {
+    try {
+      let newData = {
+        ten_vi_tri: undefined,
+        tinh_thanh: undefined,
+        quoc_gia: undefined,
+        hinh_anh: file.path,
+      };
+      await this.prisma.vi_tri.update({
+        where: {
+          id: id,
+        },
+        data: newData,
+      });
+      return {
+        status: 200,
+        message: `uploadImg thành công`,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `uploadImg error ${e}`,
+      };
+    }
+  }
+  async uploadImgCloud(
     file: Express.Multer.File,
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
     return new Promise((resolve, reject) => {
@@ -138,5 +163,31 @@ export class LocationService {
       });
       toStream(file.buffer).pipe(upload);
     });
+  }
+
+  async saveToDB(id, url) {
+    try {
+      let newData = {
+        ten_vi_tri: undefined,
+        tinh_thanh: undefined,
+        quoc_gia: undefined,
+        hinh_anh: url,
+      };
+      await this.prisma.vi_tri.update({
+        where: {
+          id: id,
+        },
+        data: newData,
+      });
+      return {
+        status: 200,
+        message: `uploadImgCloud thành công`,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `uploadImg error ${e}`,
+      };
+    }
   }
 }
