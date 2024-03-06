@@ -80,4 +80,31 @@ export class LocationService {
       };
     }
   }
+  async editLocation(id: number, body: locationDTO): Promise<any> {
+    try {
+      let { ten_vi_tri, tinh_thanh, quoc_gia, hinh_anh } = body;
+      let quoc_gia2 = Number(quoc_gia);
+      let newLocation = {
+        ten_vi_tri: ten_vi_tri,
+        tinh_thanh: tinh_thanh,
+        quoc_gia: quoc_gia2,
+        hinh_anh: hinh_anh,
+      };
+      await this.prisma.vi_tri.update({
+        where: {
+          id: id,
+        },
+        data: newLocation,
+      });
+      return {
+        status: 201,
+        message: `editLocation thành công`,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `editLocation error ${e}`,
+      };
+    }
+  }
 }
