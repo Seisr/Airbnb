@@ -19,4 +19,11 @@ export class RoomController {
     let data = await this.roomService.getRoomByLocationId(+id);
     res.status(data.status).json(data);
   }
+
+  @ApiParam({ name: 'id', required: true })
+  @Get('/getRoomByRoomId/:id')
+  async getRoomByRoomId(@Param('id') id, @Res() res): Promise<any> {
+    let data = await this.roomService.getRoomByRoomId(+id);
+    res.status(data.status).json(data);
+  }
 }

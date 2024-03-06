@@ -36,4 +36,22 @@ export class RoomService {
       };
     }
   }
+  async getRoomByRoomId(id: number): Promise<any> {
+    try {
+      let data = await this.prisma.phong.findFirst({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        status: 200,
+        data: data,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `getRoomByRoomId error ${e}`,
+      };
+    }
+  }
 }
