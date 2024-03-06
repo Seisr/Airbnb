@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { locationDTO } from './dto/location.dto';
-
+import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
+import toStream = require('buffer-to-stream');
 @Injectable()
 export class LocationService {
   prisma = new PrismaClient();
@@ -124,5 +125,18 @@ export class LocationService {
         message: `delete Location error ${e}`,
       };
     }
+  }
+  async uploadImage(
+    file: Express.Multer.File,
+  ): Promise<UploadApiResponse | UploadApiErrorResponse> {
+    return new Promise((resolve, reject) => {
+      const upload = v2.uploader.upload_stream((error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+      toStream(file.buffer).pipe(upload);
+    });
   }
 }

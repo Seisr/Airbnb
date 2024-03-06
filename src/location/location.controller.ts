@@ -7,10 +7,15 @@ import {
   Post,
   Put,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
-import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
 import { locationDTO } from './dto/location.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { FilesUploadDto } from './dto/file.dto';
 
 @ApiTags('Location')
 @Controller('location')
@@ -64,5 +69,30 @@ export class LocationController {
   async deleteLocation(@Param('id') id, @Res() res): Promise<any> {
     let data = await this.locationService.deleteLocation(+id);
     res.status(data.status).json(data);
+  }
+
+  @Post('/uploadImg')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: FilesUploadDto })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: process.cwd() + '/public/img',
+        filename: (req, file, callback) => {
+          callback(null, new Date().getTime() + `${file.originalname}`);
+        },
+      }),
+    }),
+  )
+  async uploadImg(@UploadedFile('file') file): Promise<any> {
+    return file;
+  }
+
+  @Post('/upload-cloud')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: FilesUploadDto })
+  @UseInterceptors(FileInterceptor('file'))
+  uploadCloud(@UploadedFile('file') file: Express.Multer.File) {
+    return this.locationService.uploadImage(file);
   }
 }
