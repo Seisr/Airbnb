@@ -63,4 +63,33 @@ export class BookingService {
       };
     }
   }
+  async editBooking(id: number, body: bookingDTO): Promise<any> {
+    try {
+      let { ma_phong, ngay_den, ngay_di, so_luong_khach, ma_nguoi_dat } = body;
+      let ngay_den2 = new Date(ngay_den).toISOString();
+      let ngay_di2 = new Date(ngay_di).toISOString();
+      let newBooking = {
+        ma_phong: ma_phong,
+        ngay_den: ngay_den2,
+        ngay_di: ngay_di2,
+        so_luong_khach: so_luong_khach,
+        ma_nguoi_dat: ma_nguoi_dat,
+      };
+      await this.prisma.dat_phong.update({
+        where: {
+          id: id,
+        },
+        data: newBooking,
+      });
+      return {
+        status: 200,
+        message: 'edit booking thành công',
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `editBooking error ${e}`,
+      };
+    }
+  }
 }

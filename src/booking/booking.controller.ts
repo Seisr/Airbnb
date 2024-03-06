@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { bookingDTO } from './dto/booking.dto';
@@ -20,9 +20,20 @@ export class BookingController {
     res.status(data.status).json(data);
   }
 
-  @Post('/postBooking')
+  @Post('/postBooking/')
   async postBooking(@Body() body: bookingDTO, @Res() res): Promise<any> {
     let data = await this.bookingService.postBooking(body);
+    res.status(data.status).json(data);
+  }
+
+  @ApiParam({ name: 'id' })
+  @Put('/editBooking/:id')
+  async editBooking(
+    @Param('id') id,
+    @Body() body: bookingDTO,
+    @Res() res,
+  ): Promise<any> {
+    let data = await this.bookingService.editBooking(+id, body);
     res.status(data.status).json(data);
   }
 }
