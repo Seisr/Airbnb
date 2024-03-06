@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { roomDTO } from './dto/room.dto';
 
 @ApiTags('Room')
 @Controller('room')
@@ -36,6 +37,12 @@ export class RoomController {
     @Res() res,
   ): Promise<any> {
     let data = await this.roomService.getListRoomByPage(+page, +size);
+    res.status(data.status).json(data);
+  }
+
+  @Post('/postRoom')
+  async postRoom(@Body() body: roomDTO, @Res() res): Promise<any> {
+    let data = await this.roomService.postRoom(body);
     res.status(data.status).json(data);
   }
 }
