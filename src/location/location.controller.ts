@@ -80,7 +80,7 @@ export class LocationController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: process.cwd() + '/public/img',
+        destination: process.cwd() + '/public/imgLocation',
         filename: (req, file, callback) => {
           callback(null, new Date().getTime() + `${file.originalname}`);
         },

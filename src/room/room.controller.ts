@@ -7,10 +7,15 @@ import {
   Post,
   Put,
   Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RoomService } from './room.service';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
 import { roomDTO } from './dto/room.dto';
+import { FilesUploadDto } from 'src/location/dto/file.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @ApiTags('Room')
 @Controller('room')
@@ -70,6 +75,29 @@ export class RoomController {
   @Delete('/deleteRoomById/:id')
   async deleteRoomById(@Param('id') id, @Res() res): Promise<any> {
     let data = await this.roomService.deleteRoomById(+id);
+    res.status(data.status).json(data);
+  }
+
+  @ApiParam({ name: 'id', required: true })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: FilesUploadDto })
+  @Post('/uploadRoomImg/:id')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: process.cwd() + '/public/imgRoom',
+        filename: (req, file, callback) => {
+          callback(null, new Date().getTime() + `${file.originalname}`);
+        },
+      }),
+    }),
+  )
+  async uploadRoomImg(
+    @Param('id') id,
+    @UploadedFile('file') file,
+    @Res() res,
+  ): Promise<any> {
+    let data = await this.roomService.uploadImg(+id, file);
     res.status(data.status).json(data);
   }
 }

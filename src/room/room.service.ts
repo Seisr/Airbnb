@@ -188,6 +188,45 @@ export class RoomService {
       };
     }
   }
+  async uploadImg(id, file): Promise<any> {
+    try {
+      let newData = {
+        ma_vi_tri: undefined,
+        ten_phong: undefined,
+        so_khach: undefined,
+        so_phong_ngu: undefined,
+        so_giuong: undefined,
+        so_phong_tam: undefined,
+        mo_ta: undefined,
+        gia_tien: undefined,
+        may_giat: undefined,
+        ban_la: undefined,
+        tivi: undefined,
+        dieu_hoa: undefined,
+        wifi: undefined,
+        bep: undefined,
+        do_xe: undefined,
+        ho_boi: undefined,
+        ban_ui: undefined,
+        hinh_anh: file.path,
+      };
+      await this.prisma.phong.update({
+        where: {
+          id: id,
+        },
+        data: newData,
+      });
+      return {
+        status: 200,
+        message: `uploadImg thành công`,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `uploadImg error ${e}`,
+      };
+    }
+  }
   async deleteRoomById(id): Promise<any> {
     try {
       await this.prisma.phong.delete({
