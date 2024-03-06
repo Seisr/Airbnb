@@ -7,11 +7,15 @@ import {
   Post,
   Put,
   Res,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
 import { editDTO } from './dto/edit.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { FilesUploadDto } from 'src/location/dto/file.dto';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
@@ -60,6 +64,26 @@ export class UserController {
     let data = await this.userService.deleteUserById(id);
     res.status(data.status).json(data);
   }
+
+  @Post('/uploadAvatar/')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: FilesUploadDto })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: process.cwd() + '/public/imgLocation',
+        filename: (req, file, callback) => {
+          callback(null, new Date().getTime() + `${file.originalname}`);
+        },
+      }),
+    }),
+  )
+  async uploadImg(@UploadedFile('file') file): Promise<any> {
+    return file;
+    // let data = await this.userService.uploadImg(file);
+    // res.status(data.status).json(data);
+  }
+
   // @Post('/uploadAvatar')
   // @UseInterceptors(
   //   FileInterceptor('file', {

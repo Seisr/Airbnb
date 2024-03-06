@@ -135,7 +135,17 @@ export class UserService {
       };
     }
   }
-  async uploadAvatar(): Promise<any> {
-    let avatar = {};
+  async uploadImg(file): Promise<any> {
+    try {
+      return {
+        status: 200,
+        message: `uploadImg thành công`,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `uploadImg error ${e}`,
+      };
+    }
   }
 }
