@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { roomDTO } from './dto/room.dto';
@@ -43,6 +43,17 @@ export class RoomController {
   @Post('/postRoom')
   async postRoom(@Body() body: roomDTO, @Res() res): Promise<any> {
     let data = await this.roomService.postRoom(body);
+    res.status(data.status).json(data);
+  }
+
+  @ApiParam({ name: 'id', required: true })
+  @Put('/editRoomById/:id')
+  async editRoomById(
+    @Param('id') id,
+    @Body() body: roomDTO,
+    @Res() res,
+  ): Promise<any> {
+    let data = await this.roomService.editRoomById(+id, body);
     res.status(data.status).json(data);
   }
 }

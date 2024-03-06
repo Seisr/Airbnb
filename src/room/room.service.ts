@@ -129,4 +129,63 @@ export class RoomService {
       };
     }
   }
+  async editRoomById(id: number, body: roomDTO): Promise<any> {
+    try {
+      let {
+        ma_vi_tri,
+        ten_phong,
+        so_khach,
+        so_phong_ngu,
+        so_giuong,
+        so_phong_tam,
+        mo_ta,
+        gia_tien,
+        may_giat,
+        ban_la,
+        tivi,
+        dieu_hoa,
+        wifi,
+        bep,
+        do_xe,
+        ho_boi,
+        ban_ui,
+        hinh_anh,
+      } = body;
+      let newRoom = {
+        ma_vi_tri: ma_vi_tri,
+        ten_phong: ten_phong,
+        so_khach: so_khach,
+        so_phong_ngu: so_phong_ngu,
+        so_giuong: so_giuong,
+        so_phong_tam: so_phong_tam,
+        mo_ta: mo_ta,
+        gia_tien: gia_tien,
+        may_giat: may_giat,
+        ban_la: ban_la,
+        tivi: tivi,
+        dieu_hoa: dieu_hoa,
+        wifi: wifi,
+        bep: bep,
+        do_xe: do_xe,
+        ho_boi: ho_boi,
+        ban_ui: ban_ui,
+        hinh_anh: hinh_anh,
+      };
+      await this.prisma.phong.update({
+        where: {
+          id: id,
+        },
+        data: newRoom,
+      });
+      return {
+        status: 201,
+        message: `editRoomById thành công`,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `editRoomById error ${e}`,
+      };
+    }
+  }
 }
