@@ -23,4 +23,14 @@ export class LocationController {
     let data = await this.locationService.getLocationByPage(+page, +size);
     res.status(data.status).json(data);
   }
+
+  @ApiParam({ name: 'id', required: true })
+  @Get('getLocationByLocationId/:id')
+  async getLocationByLocationId(
+    @Param('id') id: number,
+    @Res() res,
+  ): Promise<any> {
+    let data = await this.locationService.getLocationByLocationId(+id);
+    res.status(data.status).json(data);
+  }
 }

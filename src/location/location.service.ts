@@ -36,4 +36,23 @@ export class LocationService {
       };
     }
   }
+
+  async getLocationByLocationId(id: number): Promise<any> {
+    try {
+      let data = await this.prisma.vi_tri.findFirst({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        status: 200,
+        data: data,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `getLocationByLocationId error ${e}`,
+      };
+    }
+  }
 }
