@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { bookingDTO } from './dto/booking.dto';
@@ -34,6 +43,13 @@ export class BookingController {
     @Res() res,
   ): Promise<any> {
     let data = await this.bookingService.editBooking(+id, body);
+    res.status(data.status).json(data);
+  }
+
+  @ApiParam({ name: 'id' })
+  @Delete('/deleteBooking/:id')
+  async deleteBooking(@Param('id') id, @Res() res): Promise<any> {
+    let data = await this.bookingService.deleteBooking(+id);
     res.status(data.status).json(data);
   }
 }
