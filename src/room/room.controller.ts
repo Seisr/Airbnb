@@ -26,4 +26,16 @@ export class RoomController {
     let data = await this.roomService.getRoomByRoomId(+id);
     res.status(data.status).json(data);
   }
+
+  @ApiParam({ name: 'page', required: true })
+  @ApiParam({ name: 'size', required: true })
+  @Get('/getListRoomByPage/:page/:size')
+  async getListRoomByPage(
+    @Param('page') page,
+    @Param('size') size,
+    @Res() res,
+  ): Promise<any> {
+    let data = await this.roomService.getListRoomByPage(+page, +size);
+    res.status(data.status).json(data);
+  }
 }
