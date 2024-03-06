@@ -29,6 +29,13 @@ export class BookingController {
     res.status(data.status).json(data);
   }
 
+  @ApiParam({ name: 'id', required: true })
+  @Get('/getBookingByCustomerId/:id')
+  async getBookingByCustomerId(@Param('id') id, @Res() res): Promise<any> {
+    let data = await this.bookingService.getBookingByCustomerId(+id);
+    res.status(data.status).json(data);
+  }
+
   @Post('/postBooking/')
   async postBooking(@Body() body: bookingDTO, @Res() res): Promise<any> {
     let data = await this.bookingService.postBooking(body);

@@ -37,6 +37,25 @@ export class BookingService {
       };
     }
   }
+  async getBookingByCustomerId(id: number): Promise<any> {
+    try {
+      let data = await this.prisma.dat_phong.findMany({
+        where: {
+          ma_nguoi_dat: id,
+        },
+      });
+      return {
+        status: 200,
+        data: data,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `getBookingByCustomerId error ${e}`,
+      };
+    }
+  }
+
   async postBooking(body: bookingDTO): Promise<any> {
     try {
       let { ma_phong, ngay_den, ngay_di, so_luong_khach, ma_nguoi_dat } = body;
