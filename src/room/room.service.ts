@@ -188,4 +188,22 @@ export class RoomService {
       };
     }
   }
+  async deleteRoomById(id): Promise<any> {
+    try {
+      await this.prisma.phong.delete({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        status: 200,
+        message: 'delete Room thành công',
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `deleteRoomById error ${e}`,
+      };
+    }
+  }
 }
