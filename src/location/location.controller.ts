@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { LocationService } from './location.service';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { locationDTO } from './dto/location.dto';
 
 @ApiTags('Location')
 @Controller('location')
@@ -31,6 +32,13 @@ export class LocationController {
     @Res() res,
   ): Promise<any> {
     let data = await this.locationService.getLocationByLocationId(+id);
+    res.status(data.status).json(data);
+  }
+
+  @ApiBody({ type: locationDTO })
+  @Post('/postLocation')
+  async postLocation(@Body() body: locationDTO, @Res() res): Promise<any> {
+    let data = await this.locationService.postLocation(body);
     res.status(data.status).json(data);
   }
 }
