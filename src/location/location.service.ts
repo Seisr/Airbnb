@@ -107,4 +107,22 @@ export class LocationService {
       };
     }
   }
+  async deleteLocation(id: number): Promise<any> {
+    try {
+      await this.prisma.vi_tri.delete({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        status: 200,
+        message: `deleteLocation thành công`,
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        message: `delete Location error ${e}`,
+      };
+    }
+  }
 }
