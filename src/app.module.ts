@@ -7,9 +7,10 @@ import { CommentService } from './comment/comment.service';
 import { CommentModule } from './comment/comment.module';
 import { BookingModule } from './booking/booking.module';
 import { RoomModule } from './room/room.module';
+import { LocationModule } from './location/location.module';
 
 @Module({
-  imports: [UserModule, AuthModule, CommentModule, BookingModule, RoomModule],
+  imports: [UserModule, AuthModule, CommentModule, BookingModule, RoomModule, LocationModule],
   controllers: [AppController],
   providers: [AppService, CommentService],
 })
