@@ -8,6 +8,7 @@ async function bootstrap() {
   // setup document cho swagger
   const config = new DocumentBuilder()
     .setTitle('Capstone Airbnb')
+    .addBearerAuth()
     .setDescription('Danh sách các api về Airbnb')
     .setVersion('1.0')
     .build();

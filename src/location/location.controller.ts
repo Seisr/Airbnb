@@ -3,27 +3,39 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   Param,
   Post,
   Put,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
-import { ApiBody, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { locationDTO } from './dto/location.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { FilesUploadDto } from './dto/file.dto';
 import { PrismaClient } from '@prisma/client';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
 @ApiTags('Location')
 @Controller('location')
 export class LocationController {
   constructor(private readonly locationService: LocationService) {}
   prisma = new PrismaClient();
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('/getAllLocation')
   async getAllLocation(@Res() res): Promise<any> {
     let data = await this.locationService.getAllLocation();
